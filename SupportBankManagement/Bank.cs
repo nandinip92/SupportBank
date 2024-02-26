@@ -36,59 +36,6 @@ class Bank
         }
     }
 
-    public void CheckTransaction(Transaction transaction)
-    {
-        var fromPersonAccount = GetFromAccount(transaction.From, transaction.Amount);
-        var toPersonAccount = GetToAccount(transaction.To, transaction.Amount);
-    }
+   public void CheckTransaction(){}
 
-    public void UpdateFromPersonAccount(Account fromPersonAccount, decimal amount)
-    {
-        fromPersonAccount.AmountRecievable += amount;
-    }
-
-    public void UpdateToPersonAccount(Account toPersonAccount, decimal amount)
-    {
-        toPersonAccount.AmountDue += amount;
-    }
-
-    public Account GetFromAccount(string name, decimal amount)
-    {
-        if (_account.ContainsKey(name))
-        {
-            return _account[name];
-        }
-        else
-        {
-            var newAccount = new Account
-            {
-                Name = name,
-                AmountRecievable = amount,
-                AmountDue = 0
-            };
-            _account.Add(name, newAccount);
-            return newAccount;
-        }
-    }
-
-    public Account GetToAccount(string name, decimal amount)
-    {
-        if (_account.ContainsKey(name))
-        {
-            UpdateToPersonAccount(_account[name], amount);
-            return _account[name];
-        }
-        else
-        {
-            var newAccount = new Account
-            {
-                Name = name,
-                AmountRecievable = 0,
-                AmountDue = amount
-            };
-            _account.Add(name, newAccount);
-            return newAccount;
-        }
-    }
-    
 }
