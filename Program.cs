@@ -5,12 +5,9 @@ var fileName = "./data/Transactions2014.csv";
 var Bank = new Bank();
 Bank.ReadTransactionsFile(fileName);
 
-// Console.WriteLine(transactionList);
-// transactionList.ForEach(
-//     (transaction) =>
-//     {
-//         Console.WriteLine(
-//             $"{transaction.Date} | {transaction.From} | {transaction.To}|"
-//         );
-//     }
-// );
+
+Bank.GetAllRecords();
+
+Console.WriteLine("Please Enter the Name of the person you want know the transaction details about");
+var name = Console.ReadLine()??"";
+Bank.GetAllTransactionsOfAccount(name.ToUpper());

@@ -1,6 +1,7 @@
 namespace SupportBank.SupportBankManagement;
 
 using System.Globalization;
+using System.Transactions;
 using CsvHelper;
 
 class Bank
@@ -19,7 +20,7 @@ class Bank
                 (transaction) =>
                 {
                     //Console.WriteLine(transaction);
-                    CheckTransaction(transaction);
+                    UpdateAccount(transaction);
                     // Console.WriteLine($"{transaction.Date} | {transaction.From} | {transaction.To}|");
                 }
             );
@@ -36,6 +37,48 @@ class Bank
         }
     }
 
-   public void CheckTransaction(){}
+    public void UpdateAccount(Transaction transaction)
+    {
+        //This funtion will update the transaction if the account is present
+        //Then it will update the AmountOwed else it will create a new account for that person
+        //Finally adds the trasaction to the Transactions list
+        var nameKey = transaction.From.ToUpper(); // to ignore the case when input is given
+        var name = transaction.From;
+        if (_account.ContainsKey(nameKey))
+        {
+            _account[nameKey].AmountOwed += transaction.Amount;
+        }
+        else
+        {
+            var newAccount = new Account
+            {
+                Name = name,
+                AmountOwed = transaction.Amount,
+                AccountTransactions = [transaction]
+            };
+            _account[nameKey]=newAccount;
+        }
+        _account[nameKey].AccountTransactions.Add(transaction);
+    }
 
+    public void GetAllRecords()
+    {
+        string border = String.Concat('\n', new string('-', 45), '\n');
+        string header = string.Format("|{0,15} |{1,20} |", "Name", "Total Amount Owed");
+        var table = String.Concat(border,header, border);
+        foreach (var (name, account) in _account)
+        {
+            string row = String.Format("|{0,15} |{1,20} |", account.Name, account.AmountOwed);
+            table = String.Concat(table, row, border);
+        }
+        Console.WriteLine(table);
+    }
+
+    public void GetAllTransactionsOfAccount(string name) {
+        try{
+        Console.WriteLine(_account[name]);
+        }catch(KeyNotFoundException){
+            Console.WriteLine($"Sorry, There is not account holder named '{name}'");
+        }
+     }
 }
