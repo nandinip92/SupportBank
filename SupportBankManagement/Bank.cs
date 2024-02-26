@@ -39,7 +39,7 @@ class Bank
 
     public void UpdateAccount(Transaction transaction)
     {
-        //This funtion will update the transaction if the account is present
+        //This method will update the transaction if the account is present
         //Then it will update the AmountOwed else it will create a new account for that person
         //Finally adds the trasaction to the Transactions list
         var nameKey = transaction.From.ToUpper(); // to ignore the case when input is given
@@ -56,16 +56,18 @@ class Bank
                 AmountOwed = transaction.Amount,
                 AccountTransactions = [transaction]
             };
-            _account[nameKey]=newAccount;
+            _account[nameKey] = newAccount;
         }
         _account[nameKey].AccountTransactions.Add(transaction);
     }
 
     public void GetAllRecords()
     {
+        //  Following method is for:
+        // List All - prints out the names of each person, along with the total amount they owe or are owed, as before
         string border = String.Concat('\n', new string('-', 45), '\n');
         string header = string.Format("|{0,15} |{1,20} |", "Name", "Total Amount Owed");
-        var table = String.Concat(border,header, border);
+        var table = String.Concat(border, header, border);
         foreach (var (name, account) in _account)
         {
             string row = String.Format("|{0,15} |{1,20} |", account.Name, account.AmountOwed);
@@ -74,11 +76,17 @@ class Bank
         Console.WriteLine(table);
     }
 
-    public void GetAllTransactionsOfAccount(string name) {
-        try{
-        Console.WriteLine(_account[name]);
-        }catch(KeyNotFoundException){
+    public void GetAllTransactionsOfAccount(string name)
+    {
+        //Following method is for -
+        //List [Account] - prints out every transaction (with date, narrative, to and amount) for the specific account the user asks for.
+        try
+        {
+            Console.WriteLine(_account[name]);
+        }
+        catch (KeyNotFoundException)
+        {
             Console.WriteLine($"Sorry, There is not account holder named '{name}'");
         }
-     }
+    }
 }
