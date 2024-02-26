@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "8Pcrio8qlnm9ze1ee5Z9q9MD5iBnoV5WHM0f7IVMJU78Nyi/+p0idOl/w2Swj67YjWAd3WK0tx0t+/kg1CCGoA==",
+  "success": true,
+  "projectFilePath": "C:\\WORK\\GIT\\c#Training\\SupportBank\\SupportBank.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\NanPol\\.nuget\\packages\\csvhelper\\31.0.0\\csvhelper.31.0.0.nupkg.sha512",
+    "C:\\Users\\NanPol\\.nuget\\packages\\system.linq.async\\4.0.0\\system.linq.async.4.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
