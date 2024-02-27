@@ -19,11 +19,10 @@ class Bank
             _transactionRegister.ForEach(
                 (transaction) =>
                 {
-                    //Console.WriteLine(transaction);
                     UpdateAccount(transaction);
-                    // Console.WriteLine($"{transaction.Date} | {transaction.From} | {transaction.To}|");
                 }
             );
+            fileReader.Close();
         }
         catch (FileNotFoundException)
         {
