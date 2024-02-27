@@ -13,8 +13,8 @@ class Bank
     {
         try
         {
-            var fileReader = new StreamReader(fileName);
-            var csvData = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+            using var fileReader = new StreamReader(fileName);
+            using var csvData = new CsvReader(fileReader, CultureInfo.InvariantCulture);
             _transactionRegister = csvData.GetRecords<Transaction>().ToList();
             _transactionRegister.ForEach(
                 (transaction) =>
@@ -22,7 +22,6 @@ class Bank
                     UpdateAccount(transaction);
                 }
             );
-            fileReader.Close();
         }
         catch (FileNotFoundException)
         {
