@@ -1,14 +1,19 @@
 namespace SupportBank.SupportBankManagement;
 
 using System.Globalization;
-using System.Transactions;
 using CsvHelper;
+using Microsoft.Extensions.Logging;
 
 class Bank
 {
     private List<Transaction> _transactionRegister = [];
-    private Dictionary<string, Account> _account = [];
+    private readonly Dictionary<string, Account> _account = [];
+     private readonly ILogger<SupportBankApp> _logger;
 
+    public Bank(ILogger<SupportBankApp> logger)
+    {
+        _logger = logger;
+    }
     public void ReadTransactionsFile(string fileName)
     {
         try
@@ -55,6 +60,7 @@ class Bank
                 AccountTransactions = [transaction]
             };
             _account[nameKey] = newAccount;
+            _logger.LogInformation($"New account is created for {name}");
         }
         _account[nameKey].AccountTransactions.Add(transaction);
     }

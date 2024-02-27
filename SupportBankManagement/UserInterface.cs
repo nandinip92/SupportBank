@@ -1,12 +1,22 @@
 namespace SupportBank.SupportBankManagement;
+
+using Microsoft.Extensions.Logging;
+
 class UserInterface
 {
-    void RunUI()
-    {
-        //var fileName = "./data/Transactions2014.csv";
-        var fileName = "./data/DodgyTransactions2015.csv";
+    private readonly ILogger<SupportBankApp> _logger;
 
-        var Bank = new Bank();
+    public UserInterface(ILogger<SupportBankApp> logger)
+    {
+        _logger = logger;
+    }
+
+    public void RunUI()
+    {
+        var fileName = "./data/Transactions2014.csv";
+        // var fileName = "./data/DodgyTransactions2015.csv";
+
+        var Bank = new Bank(_logger);
         Bank.ReadTransactionsFile(fileName);
 
         Console.WriteLine("Helooo Welcome....!!!");
