@@ -47,9 +47,9 @@ class Bank
         //Finally adds the trasaction to the Transactions list
         var nameKey = transaction.From.ToUpper(); // to ignore the case when input is given
         var name = transaction.From;
-        if (_account.ContainsKey(nameKey))
+        if (_account.TryGetValue(nameKey, out Account? value))
         {
-            _account[nameKey].AmountOwed += transaction.Amount;
+            value.AmountOwed += transaction.Amount;
         }
         else
         {
