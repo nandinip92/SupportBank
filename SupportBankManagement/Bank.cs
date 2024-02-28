@@ -36,7 +36,6 @@ class Bank
             //      UpdateAccount(transaction);
             // }
 
-            // var isRecordBad = false;
             var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 ReadingExceptionOccurred = args=>{
