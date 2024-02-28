@@ -2,31 +2,57 @@ namespace SupportBank.SupportBankManagement;
 
 using System.Globalization;
 using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.TypeConversion;
 using Microsoft.Extensions.Logging;
+using NLog.Layouts;
 
 class Bank
 {
     private List<Transaction> _transactionRegister = [];
     private readonly Dictionary<string, Account> _account = [];
-     private readonly ILogger<SupportBankApp> _logger;
+    private readonly ILogger<SupportBankApp> _logger;
 
     public Bank(ILogger<SupportBankApp> logger)
     {
         _logger = logger;
     }
+
     public void ReadTransactionsFile(string fileName)
     {
         try
         {
             using var fileReader = new StreamReader(fileName);
-            using var csvData = new CsvReader(fileReader, CultureInfo.InvariantCulture);
-            _transactionRegister = csvData.GetRecords<Transaction>().ToList();
-            _transactionRegister.ForEach(
-                (transaction) =>
-                {
-                    UpdateAccount(transaction);
+            // using var csvData = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+            // _transactionRegister = csvData.GetRecords<Transaction>().ToList();
+            // _transactionRegister.ForEach(
+            //     (transaction) =>
+            //     {
+            //         UpdateAccount(transaction);
+            //     }
+            // );
+            // foreach(var transaction in csvData.GetRecords<Transaction>()){
+            //      _transactionRegister.Add(transaction);
+            //      UpdateAccount(transaction);
+            // }
+
+            // var isRecordBad = false;
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                ReadingExceptionOccurred = args=>{
+                    if (args.Exception is TypeConverterException){
+                        _logger.LogWarning($"Bad Record Found {args.Exception.Context.Parser.RawRecord}");
+                        return false;
+                    }
+                    return true;
                 }
-            );
+            };
+            using var csvData = new CsvReader(fileReader, csvConfig);
+            foreach (var transaction in csvData.GetRecords<Transaction>())
+            {
+                _transactionRegister.Add(transaction);
+                UpdateAccount(transaction);
+            }
         }
         catch (FileNotFoundException)
         {
@@ -38,6 +64,10 @@ class Bank
                 $"Sorry cannot open {fileName}, Please close the file if it is open in another process."
             );
         }
+        // catch (CsvHelperException ex)
+        // {
+        //     Console.WriteLine(ex.Message);
+        // }
     }
 
     public void UpdateAccount(Transaction transaction)

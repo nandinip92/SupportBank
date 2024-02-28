@@ -13,8 +13,8 @@ class UserInterface
 
     public void RunUI()
     {
-        var fileName = "./data/Transactions2014.csv";
-        // var fileName = "./data/DodgyTransactions2015.csv";
+        // var fileName = "./data/Transactions2014.csv";
+        var fileName = "./data/DodgyTransactions2015.csv";
 
         var Bank = new Bank(_logger);
         Bank.ReadTransactionsFile(fileName);
