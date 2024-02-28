@@ -5,11 +5,9 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
 using Microsoft.Extensions.Logging;
-using NLog.Layouts;
-
 class Bank
 {
-    private List<Transaction> _transactionRegister = [];
+    private readonly List<Transaction> _transactionRegister = [];
     private readonly Dictionary<string, Account> _account = [];
     private readonly ILogger<SupportBankApp> _logger;
 
